@@ -1,0 +1,123 @@
+OpenTracing
+8 Dec 2017
+
+Aleksey Lanbin
+Openprovider
+
+*   
+
+.image images/logo.png
+
+* What is OpenTracing?
+
+- Distributed tracing standard for applications and OSS packages.
+- Instrumentation of your code without binding to any particular tracing _vendor_.
+
+- Span management APIs.
+- Inter-process propagation APIs
+- Span management APIs.
+
+* The OpenTracing software architecture.
+
+.image images/architecture.png _ 800
+
+* Concepts & terminology
+
+All language-specific OpenTracing APIs share core concepts and terminology.
+.link https://github.com/opentracing/specification/blob/master/specification.md
+
+Data model:
+
+- Trace
+- Span
+- Reference
+
+* Trace
+
+- A trace tells the story of a transaction or workflow as it propagates through a (potentially distributed) system.
+
+- A *Trace* can be thought of as a directed acyclic graph (DAG) of *Spans*, where the edges between _Spans_ are called *References*.
+.image images/basic.png _ 380
+
+* Way to visualize
+.image images/visualize.png 400 _ 
+
+- Context of time.
+- Hierarchy of the services involved.
+- Serial or parallel nature of the process/task execution.
+
+* Span
+
+Each *Span* encapsulates the following state:
+
+- An operation name
+- A start timestamp
+- A finish timestamp
+- A set of zero or more key:value *Span*Tags* (strings, bools, numeric types)
+- A set of zero or more *Span*Logs* (key:value map with timestamp)
+- A *SpanContext* (implementation-dependent state (for example, trace and span ids))
+- *References* to zero or more causally-related Spans (via the SpanContext of those related Spans)
+
+* Reference
+A Span may reference zero or more other SpanContexts that are causally related.
+
+Types:
+
+- ChildOf
+- FollowsFrom
+
+      [-Parent Span--------------]
+           [-Child Span A----]
+            [-Child Span B----]
+          [-Child Span C----]
+
+
+ [-Parent Span-]  [-Child Span-]
+
+    [-Parent Span-]
+                [-Child Span-]
+
+* The OpenTracing API
+
+.code snippets/tracer.go
+
+* Span interface
+
+.code snippets/span.go
+
+* SpanContext interface
+
+.code snippets/spancontext.go
+
+* Helpers
+
+.code snippets/helpers.go
+
+* Supported tracers
+
+- Zipkin
+- Jaeger
+- Appdash
+- LightStep
+- Hawkular
+- Instana 
+- sky-walking
+- inspectIT
+- stagemonitor
+
+* Jaeger
+
+.image images/jaeger.svg
+
+* Jaeger architecture
+
+.image images/architecturejaeger.png 500 _
+
+* Demo 
+
+* Resources
+
+.link http://opentracing.io/documentation/
+.link https://github.com/opentracing
+.link http://jaeger.readthedocs.io
+.link https://stash.openprovider.nl/projects/MSOA/repos/codegen/pull-requests/59/overview
